@@ -6,9 +6,6 @@ import com.tacoconsumption.tacoseaten.Repositories.TacoCommentsRepository;
 import com.tacoconsumption.tacoseaten.Repositories.TacosEatenRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class TacosEatenService {
     private TacoCommentsRepository tacoCommentsRepository;
@@ -35,12 +32,27 @@ public class TacosEatenService {
     }
 
     public TacoTeamCountList retrieveCounts() {
-        TacosEatenList tacosEatenList = new TacosEatenList(tacosEatenRepository.findAll());
+        TacosEatenList tacosEatenList = new TacosEatenList(tacosEatenRepository.findAllByOrderByTeamAssociation());
 
-        List<TacoCounts> tacoTeamCounts = new ArrayList<>();
-        tacoTeamCounts.add(new TacoCounts("One",12));
-        tacoTeamCounts.add(new TacoCounts("Two", 10));
+        TacoTeamCountList teamCounts = new TacoTeamCountList();
 
-        return new TacoTeamCountList(tacoTeamCounts);
+        String currentTeam = "";
+        int teamCount = 0;
+
+        int i = 0;
+        int numTacosEaten = tacosEatenList.getTacosEaten().size();
+        while (i < numTacosEaten) {
+            currentTeam = tacosEatenList.getTacosEaten().get(i).getTeamAssociation();
+
+            while (i < numTacosEaten && currentTeam.equals(tacosEatenList.getTacosEaten().get(i).getTeamAssociation())){
+                teamCount++;
+                i++;
+            }
+            teamCounts.getTacoTeamCounts().add(new TacoCounts(currentTeam,teamCount));
+            teamCount = 0;
+
+        }
+
+        return teamCounts;
     }
 }

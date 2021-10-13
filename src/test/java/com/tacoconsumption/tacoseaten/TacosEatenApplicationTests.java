@@ -52,6 +52,23 @@ class TacosEatenApplicationTests {
 	}
 
 	@Test
+	void getTacoCounts(){
+		//Arrange
+		eatTacosService.ateTaco("Team5");
+		eatTacosService.ateTaco("Team1");
+		eatTacosService.ateTaco("Team3");
+		eatTacosService.ateTaco("Team2");
+		eatTacosService.ateTaco("Team1");
+		eatTacosService.ateTaco("Team2");
+		eatTacosService.ateTaco("Team5");
+		//Act
+		TacoTeamCountList teamCounts = eatTacosService.retrieveCounts();
+		//Assert
+		assertNotNull(teamCounts);
+		assertEquals(4, teamCounts.getTacoTeamCounts().size());
+	}
+
+	@Test
 	void addComment() {
 		//Act
 		TacoComment saveComment = eatTacosService.makeComment("Taco Bell dont count");

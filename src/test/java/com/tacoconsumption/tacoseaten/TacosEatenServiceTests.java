@@ -57,13 +57,13 @@ public class TacosEatenServiceTests {
         tacosEaten.add(new TacoEaten("Two"));
 
         //Act
-        when(tacosEatenRepository.findAll()).thenReturn(tacosEaten);
+        when(tacosEatenRepository.findAllByOrderByTeamAssociation()).thenReturn(tacosEaten);
         TacoTeamCountList savedCounts = eatTacosService.retrieveCounts();
 
         //Assert
         assertNotNull(savedCounts);
         assertFalse(savedCounts.isEmpty());
-        verify(tacosEatenRepository).findAll();
+        verify(tacosEatenRepository).findAllByOrderByTeamAssociation();
 
     }
 
@@ -89,13 +89,13 @@ public class TacosEatenServiceTests {
         commentsMade.add(new TacoComment("Fish tacos don't count."));
 
         //Act
-        when(tacoCommentsRepository.findAll()).thenReturn(commentsMade);
+        when(tacoCommentsRepository.findFirst20ByOrderByCommentTimeStampDesc()).thenReturn(commentsMade);
         TacoCommentsList savedComments = eatTacosService.retrieveComments();
 
         //Assert
         assertNotNull(savedComments);
         assertFalse(savedComments.isEmpty());
-        verify(tacoCommentsRepository).findAll();
+        verify(tacoCommentsRepository).findFirst20ByOrderByCommentTimeStampDesc();
 
     }
 }
