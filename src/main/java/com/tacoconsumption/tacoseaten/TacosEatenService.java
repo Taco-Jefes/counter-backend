@@ -31,7 +31,7 @@ public class TacosEatenService {
     }
 
     public TacoCommentsList retrieveComments() {
-        return new TacoCommentsList(tacoCommentsRepository.findAll());
+        return new TacoCommentsList(tacoCommentsRepository.findFirst20ByOrderByCommentTimeStampDesc());
     }
 
     public TacoTeamCountList retrieveCounts() {

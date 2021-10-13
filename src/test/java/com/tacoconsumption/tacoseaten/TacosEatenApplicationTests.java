@@ -11,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TacosEatenApplicationTests {
@@ -60,4 +59,20 @@ class TacosEatenApplicationTests {
 		assertNotNull(saveComment);
 		assertEquals("Taco Bell dont count", saveComment.getComment());
 	}
+
+	@Test
+	void getComments() {
+		//Arrange
+		for (int i = 0; i < 25; i++) {
+			eatTacosService.makeComment("Comment" + i);
+		}
+		//Act
+		TacoCommentsList tacoComments = eatTacosService.retrieveComments();
+		//Assert
+
+		assertNotNull(tacoComments);
+		assertFalse(tacoComments.isEmpty());
+		assertEquals(20, tacoComments.getTacoCommentList().size());
+	}
+
 }

@@ -21,8 +21,6 @@ public class TacoEaten {
         this.ateTacoRecordDate = new Timestamp((System.currentTimeMillis()));
     }
 
-
-
     public String getTeamAssociation() {
         return teamAssociation;
     }
