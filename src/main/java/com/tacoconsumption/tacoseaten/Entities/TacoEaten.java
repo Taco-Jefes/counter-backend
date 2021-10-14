@@ -17,7 +17,7 @@ public class TacoEaten {
     }
 
     public TacoEaten(String team) {
-        this.teamAssociation = team.toLowerCase();
+        this.teamAssociation = team;
         this.ateTacoRecordDate = new Timestamp((System.currentTimeMillis()));
     }
 
@@ -26,7 +26,7 @@ public class TacoEaten {
     }
 
     public void setTeamAssociation(String teamAssociation) {
-        this.teamAssociation = teamAssociation.toLowerCase();
+        this.teamAssociation = teamAssociation;
     }
 
     public Timestamp getAteTacoRecordDate() {

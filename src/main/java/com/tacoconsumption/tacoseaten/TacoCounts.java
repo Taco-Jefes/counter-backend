@@ -6,7 +6,7 @@ public class TacoCounts {
     private int tacoCount;
 
     public TacoCounts(String team,  int tacoCount) {
-        this.team = team.toLowerCase();
+        this.team = team;
         this.tacoCount = tacoCount;
     }
 
@@ -15,7 +15,7 @@ public class TacoCounts {
     }
 
     public void setTeam(String team) {
-        this.team = team.toLowerCase();
+        this.team = team;
     }
 
     public int getTacoCount() {

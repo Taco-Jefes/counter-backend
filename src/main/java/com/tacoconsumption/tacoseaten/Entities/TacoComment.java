@@ -10,22 +10,22 @@ public class TacoComment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Timestamp commentTimeStamp;
-    private String comment;
+    private String message;
 
         public TacoComment(){
         }
 
     public TacoComment(String comment) {
-        this.comment = comment;
+        this.message = comment;
         this.commentTimeStamp = new Timestamp((System.currentTimeMillis()));
     }
 
     public String getComment() {
-        return comment;
+        return message;
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.message = comment;
     }
 
     public Timestamp getCommentTimeStamp() {

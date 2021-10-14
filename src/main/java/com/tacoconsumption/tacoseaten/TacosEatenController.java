@@ -5,7 +5,7 @@ import com.tacoconsumption.tacoseaten.Entities.TacoEaten;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class TacosEatenController {

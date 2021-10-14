@@ -22,8 +22,7 @@ public class TacosEatenService {
     }
 
     public TacoComment makeComment(String comment) {
-        TacoComment tacoComment = new TacoComment();
-        tacoComment.setComment(comment);
+        TacoComment tacoComment = new TacoComment(comment);
         return tacoCommentsRepository.save(tacoComment);
     }
 
