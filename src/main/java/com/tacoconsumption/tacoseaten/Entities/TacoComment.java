@@ -17,7 +17,7 @@ public class TacoComment {
 
     public TacoComment(String comment) {
         this.message = comment;
-        this.commentTimeStamp = new Timestagimp((System.currentTimeMillis()));
+        this.commentTimeStamp = new Timestamp((System.currentTimeMillis()));
     }
 
     public String getComment() {
