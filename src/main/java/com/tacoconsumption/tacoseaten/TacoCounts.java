@@ -1,6 +1,4 @@
 package com.tacoconsumption.tacoseaten;
-
-
 public class TacoCounts {
     private String team;
     private int tacoCount;
