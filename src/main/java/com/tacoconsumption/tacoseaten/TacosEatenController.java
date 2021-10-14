@@ -16,24 +16,24 @@ public class TacosEatenController {
         this.eatTacosService = eatTacosService;
     }
 
-    @PostMapping("/atetaco")
+    @PostMapping("/tacos")
     public TacoEaten recordTaco(@RequestBody String taco) {
 
         return eatTacosService.ateTaco(taco);
     }
 
-    @GetMapping("/atetaco")
+    @GetMapping("/tacos")
     public ResponseEntity<TacoTeamCountList> retrieveCounts() {
         return ResponseEntity.ok(eatTacosService.retrieveCounts());
     }
 
-    @PostMapping("/tacotalk")
+    @PostMapping("/comments")
     public TacoComment recordComment(@RequestBody String comment) {
 
         return eatTacosService.makeComment(comment);
     }
 
-    @GetMapping("/tacotalk")
+    @GetMapping("/comments")
     public ResponseEntity<TacoCommentsList> retrieveComments() {
         return ResponseEntity.ok(eatTacosService.retrieveComments());
     }

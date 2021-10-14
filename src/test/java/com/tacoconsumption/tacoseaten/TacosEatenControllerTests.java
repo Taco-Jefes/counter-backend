@@ -39,7 +39,7 @@ public class TacosEatenControllerTests {
 
         //Act
         when(eatTacosService.ateTaco(anyString())).thenReturn(newAteTaco);
-        mockMvc.perform(post("/api/atetaco")
+        mockMvc.perform(post("/api/tacos")
                 .contentType(MediaType.TEXT_PLAIN)
                 .content("teamACT"))
         //Assert
@@ -55,7 +55,7 @@ public class TacosEatenControllerTests {
         tacoTeamCounts.add(new TacoCounts("Two", 10));
         //Act
         when(eatTacosService.retrieveCounts()).thenReturn(new TacoTeamCountList(tacoTeamCounts));
-        mockMvc.perform(get("/api/atetaco"))
+        mockMvc.perform(get("/api/tacos"))
 
                 //Assert
                 .andExpect(status().isOk())
@@ -70,7 +70,7 @@ public class TacosEatenControllerTests {
 
         //Act
         when(eatTacosService.makeComment(anyString())).thenReturn(commentMade);
-        mockMvc.perform(post("/api/tacotalk")
+        mockMvc.perform(post("/api/comments")
                 .contentType(MediaType.TEXT_PLAIN)
                 .content(newComment))
                 //Assert
@@ -87,7 +87,7 @@ public class TacosEatenControllerTests {
 
         //Act
         when(eatTacosService.retrieveComments()).thenReturn(new TacoCommentsList(tacoComments));
-        mockMvc.perform(get("/api/tacotalk"))
+        mockMvc.perform(get("/api/comments"))
 
         //Assert
                 .andExpect(status().isOk())
