@@ -28,6 +28,6 @@ production:
     - apt-get install -y ruby-dev
     - gem install dpl
     #                        App name from prev step  Key from your heroku account
-    - dpl --provider=heroku --app=taco-counter --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=taco-track --api-key=$HEROKU_API_KEY
   only: # Heroku will ONLY deploy from main or master branch!
     - main
