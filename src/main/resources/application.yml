@@ -12,7 +12,8 @@ spring:
 #      secretName: Backend-to-db
 #      endpoint: secretsmanager.us-east-1.amazonaws.com
   datasource:
-    url: jdbc:postgresql://database-2.cetevaxypiv0.us-east-1.rds.amazonaws.com:5432/tacodb
+    url: jdbc:postgresql://${DB_HOST}/${DB_NAME}
     username: ${DB_USER}
     password: ${DB_PWD}
     driver-class-name: org.postgresql.Driver
+#database-2.cetevaxypiv0.us-east-1.rds.amazonaws.com

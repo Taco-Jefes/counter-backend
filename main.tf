@@ -23,7 +23,19 @@ resource "aws_vpc" "aws-project-vpc" {
 # Create a subnet
 resource "aws_subnet" "aws-project-subnet-private" {
   vpc_id                  = aws_vpc.aws-project-vpc.id
+  availability_zone = "us-east-1e"
   cidr_block              = "10.0.2.0/24"
+
+  tags = {
+    Name = "aws-project-subnet-private"
+  }
+}
+
+# Create a subnet
+resource "aws_subnet" "aws-project-subnet-private-2" {
+  vpc_id                  = aws_vpc.aws-project-vpc.id
+  availability_zone = "us-east-1c"
+  cidr_block              = "10.0.3.0/24"
 
   tags = {
     Name = "aws-project-subnet-private"
@@ -37,6 +49,15 @@ resource "aws_subnet" "aws-project-subnet-public" {
 
   tags = {
     Name = "aws-project-subnet-public"
+  }
+}
+
+resource "aws_db_subnet_group" "aws-project-db-subnet-group" {
+  name       = "backend_db_group"
+  subnet_ids = [aws_subnet.aws-project-subnet-private.id, aws_subnet.aws-project-subnet-private-2.id]
+
+  tags = {
+    Name = "aws-project-db-subnet-group"
   }
 }
 
@@ -80,7 +101,7 @@ resource "aws_security_group" "aws-project-security-group-db" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["10.0.2.0/24"]
+    cidr_blocks = ["10.0.2.0/24", "10.0.1.0/24"]
   }
 
   ingress {
@@ -136,4 +157,43 @@ resource "aws_security_group" "aws-project-security-group-backend" {
   tags = {
     Name = "aws-project-security-group-backend"
   }
+}
+
+# Launch RDS Instance
+resource "aws_db_instance" "aws-project-db" {
+  allocated_storage    = 10
+  engine               = "postgres"
+  instance_class       = "db.t3.micro"
+  name                 = "tacodb"
+  username             = "postgres"
+  password             = "tacotaco"
+  parameter_group_name = "default.postgres13"
+  db_subnet_group_name = "backend_db_group"
+  vpc_security_group_ids = [aws_security_group.aws-project-security-group-db.id]
+
+    tags = {
+      Name = "aws-project-db"
+    }
+}
+
+# Output DB endpoint
+output "db-endpoint" {
+  value = aws_db_instance.aws-project-db.endpoint
+}
+
+# Launch EC2 T2 Micro Instance
+resource "aws_instance" "aws-project-ec2-be" {
+  ami                         = "ami-04ad2567c9e3d7893"
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.aws-project-subnet-private.id
+  vpc_security_group_ids      = [aws_security_group.aws-project-security-group-backend.id]
+  user_data                   = file("install.sh")
+
+  tags = {
+    Name = "aws-project-ec2-be"
+  }
+}
+
+output "ec2-backedend-ip" {
+  value = aws_instance.aws-project-ec2-be.public_ip
 }
