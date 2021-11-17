@@ -90,6 +90,26 @@ resource "aws_route_table_association" "a" {
   route_table_id = aws_route_table.aws-project-route-table.id
 }
 
+#resource "aws_eip" "lb" {
+#  instance = aws_instance.web.id
+#  vpc      = true
+#}
+
+# Create NAT gateway
+#resource "aws_nat_gateway" "aws-project-nat-gw" {
+#  allocation_id = aws_eip.lb.id
+#  connectivity_type = "public"
+#  subnet_id     = aws_subnet.aws-project-subnet-private.id
+#
+#  tags = {
+#    Name = "aws-project-nat-gw"
+#  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+#  depends_on = [aws_internet_gateway.aws-project-gateway]
+#}
+
 # Create security group
 resource "aws_security_group" "aws-project-security-group-db" {
   name        = "allow_inbound_db"
@@ -188,6 +208,7 @@ resource "aws_instance" "aws-project-ec2-be" {
   subnet_id                   = aws_subnet.aws-project-subnet-private.id
   vpc_security_group_ids      = [aws_security_group.aws-project-security-group-backend.id]
   user_data                   = file("install.sh")
+  key_name = "test-db-project"
 
   tags = {
     Name = "aws-project-ec2-be"
