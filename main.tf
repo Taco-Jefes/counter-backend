@@ -258,7 +258,7 @@ resource "aws_instance" "aws-project-ec2-be" {
   subnet_id                   = aws_subnet.aws-project-subnet-private.id
   vpc_security_group_ids      = [aws_security_group.aws-project-security-group-backend.id]
   user_data                   = file("install.sh")
-  key_name = "test-db-project"
+  key_name = "TerraformCP"
 
   tags = {
     Name = "aws-project-ec2-be"
@@ -272,7 +272,7 @@ resource "aws_instance" "aws-project-ec2-fe" {
   subnet_id                   = aws_subnet.aws-project-subnet-public.id
   vpc_security_group_ids      = [aws_security_group.aws-project-security-group-frontend.id]
   #user_data                   = file("install-fe.sh")
-  key_name = "test-db-project"
+  key_name = "TerraformCP"
 
   tags = {
     Name = "aws-project-ec2-fe"
