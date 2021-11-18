@@ -160,6 +160,14 @@ resource "aws_security_group" "aws-project-security-group-backend" {
   }
 
   ingress {
+    description = "Backend API Connection to FE"
+    from_port   = 0 # Whats the FE port #?
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.1.0/24"]
+  }
+
+  ingress {
     description = "SSH from public subnet"
     from_port   = 22
     to_port     = 22
@@ -176,6 +184,48 @@ resource "aws_security_group" "aws-project-security-group-backend" {
 
   tags = {
     Name = "aws-project-security-group-backend"
+  }
+}
+
+# Create security group
+resource "aws_security_group" "aws-project-security-group-frontend" {
+  name        = "allow_inbound_fe"
+  description = "Allow inbound traffic and backend API connection"
+  vpc_id      = aws_vpc.aws-project-vpc.id
+
+  ingress {
+    description = "Connection to Internet"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.1.0/24", "0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Connection to BE API"
+    from_port   = 8080
+    to_port     = 8080 #is this right?
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.2.0/24", "10.0.3.0/24"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "aws-project-security-group-frontend"
   }
 }
 
@@ -215,6 +265,20 @@ resource "aws_instance" "aws-project-ec2-be" {
   }
 }
 
-output "ec2-backedend-ip" {
-  value = aws_instance.aws-project-ec2-be.public_ip
+# Launch EC2 T2 Micro Instance
+resource "aws_instance" "aws-project-ec2-fe" {
+  ami                         = "ami-04ad2567c9e3d7893"
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.aws-project-subnet-public.id
+  vpc_security_group_ids      = [aws_security_group.aws-project-security-group-frontend.id]
+  #user_data                   = file("install-fe.sh")
+  key_name = "test-db-project"
+
+  tags = {
+    Name = "aws-project-ec2-fe"
+  }
+}
+
+output "ec2-frontend-ip" {
+  value = aws_instance.aws-project-ec2-fe.public_ip
 }
